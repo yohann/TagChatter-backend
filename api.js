@@ -28,6 +28,28 @@ app.get('/users', function (req, res) {
     res.send(retUsers.sort(compare));
 });
 
+app.get('/channels', function (req, res) {
+    //reading channels.json
+    var channels = require('./channels.json');     
+    
+    //function to sort by name
+    function compare(a,b) {
+        if (a.name < b.name)
+            return -1;
+        if (a.name > b.name)
+            return 1;
+        return 0;
+        }
+
+    //deleting channels.public field
+    for (var i = 0, len = channels.length; i < len; i++) {
+        delete channels[i].public;
+    }
+
+    //returning channels sorted by name
+    res.send(channels.sort(compare));
+});
+
 var server = app.listen(5000, function () {
     console.log('Server is running..');
 });
