@@ -3,7 +3,7 @@ var app = express();
 
 app.get('/users', function (req, res) {
     //reading users.json
-    var users = require('./users.json');
+    var users = require('./users.json');     
 
     //users to be returned
     var retUsers = [];
@@ -15,7 +15,17 @@ app.get('/users', function (req, res) {
                    avatar: users[i].avatar});
     }
 
-    res.send(retUsers);
+    //function to sort by name
+    function compare(a,b) {
+        if (a.name < b.name)
+            return -1;
+        if (a.name > b.name)
+            return 1;
+        return 0;
+        }
+
+    //returning users sorted by name
+    res.send(retUsers.sort(compare));
 });
 
 var server = app.listen(5000, function () {
