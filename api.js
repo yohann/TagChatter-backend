@@ -3,6 +3,9 @@ var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
+var channels = require('./channels.json');
+var messages = [];
+
 app.get('/users', function (req, res) {
     //reading users.json
     var users = require('./users.json');     
@@ -37,7 +40,7 @@ function modelUser(users)
 
 app.get('/channels', function (req, res) {
     //reading channels.json
-    var channels = require('./channels.json');     
+    channels = require('./channels.json');     
     
     //function to sort by name
     function compare(a,b) {
@@ -113,11 +116,44 @@ app.post('/channels/:channelId/messages', function(req, res) {
         return;
     }
 
+    var messageModel = {id:channel[0].id+("000" + messages.length).slice (-4),
+                        channel:channel[0].id,
+                        content:message,
+                        created_at: new Date().toISOString(),
+                        author:sender};
+
+    messages.push(messageModel);
+    delete messageModel.channel;
+
+
     //returning response as Message model
-    res.send({id:"idunico",// a fazer
-              content:message,
-              created_at: new Date().toISOString(),
-              author:sender});
+    res.send(messageModel);
+});
+
+app.get('/channels/:channelId/messages', function(req, res) {
+    var channelId = req.params.channelId; //getting channelId
+
+    //getting channels for search
+    var channel = require('./channels.json').filter(function( obj ) {
+    return obj.id == channelId;
+    });
+    
+    //checking if channel exists
+    if(channel.length<=0)
+    {
+        res.status(404).send({
+            type: 'not_found',
+            message: '"Channel" not found'
+        });
+        return;
+    }
+
+    messagesModel = messages;
+    for (let i = 0, len = messagesModel.length; i < len; i++) {
+        delete messagesModel[i].channel;
+    }
+
+    res.send(messagesModel);
 });
 
 var server = app.listen(5000, function () {
