@@ -3,15 +3,17 @@ var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
+//getting users.json
+var usersJson = require('./users.json');
+
+//getting channels.json
 var channels = require('./channels.json');
 var messages = [];
 
 app.get('/users', function (req, res) {
-    //reading users.json
-    var users = require('./users.json');     
 
     //transforming users into Users model
-    var retUsers = modelUser(users);
+    var retUsers = modelUser(usersJson);
 
     //function to sort by name
     function compare(a,b) {
@@ -40,7 +42,7 @@ function modelUser(users)
 
 app.get('/channels', function (req, res) {
     //reading channels.json
-    channels = require('./channels.json');     
+    channels = channels;     
     
     //function to sort by name
     function compare(a,b) {
@@ -84,7 +86,7 @@ app.post('/channels/:channelId/messages', function(req, res) {
     }
 
     //getting channels for search
-    var channel = require('./channels.json').filter(function( obj ) {
+    var channel = channels.filter(function( obj ) {
         return obj.id == channelId;
     });
 
@@ -99,7 +101,7 @@ app.post('/channels/:channelId/messages', function(req, res) {
     }
 
     //getting users list already in Users model
-    var users = modelUser(require('./users.json'));
+    var users = modelUser(usersJson);
 
     //searching author in users list
     var sender = users.filter(function( obj ) {
@@ -134,7 +136,7 @@ app.get('/channels/:channelId/messages', function(req, res) {
     var channelId = req.params.channelId; //getting channelId
 
     //getting channels for search
-    var channel = require('./channels.json').filter(function( obj ) {
+    var channel = channels.filter(function( obj ) {
     return obj.id == channelId;
     });
     
