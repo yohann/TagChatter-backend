@@ -1,0 +1,25 @@
+{
+  "name": "tagchatter",
+  "version": "1.0.0",
+  "description": "\"Servidor para o desafio do processo seletivo Tagview tecnologia\"",
+  "main": "api.js",
+  "private": true,
+  "dependencies": {
+    "express": "^4.16.2",
+    "forever": "^0.15.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yohncandido/TagChatter-backend.git"
+  },
+  "author": "Yohann Candido",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yohncandido/TagChatter-backend/issues"
+  },
+  "homepage": "https://github.com/yohncandido/TagChatter-backend#readme"
+}
