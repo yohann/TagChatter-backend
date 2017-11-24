@@ -122,12 +122,15 @@ app.post('/channels/:channelId/messages', function(req, res) {
                         created_at: new Date().toISOString(),
                         author:sender};
 
+    //copying messageModel in return pattern
+    retMessage = {id: messageModel.id,
+                  content: messageModel.content,
+                  created_at:messageModel.created_at,
+                  author: messageModel.author};
     messages.push(messageModel);
-    delete messageModel.channel;
-
 
     //returning response as Message model
-    res.send(messageModel);
+    res.send(retMessage);
 });
 
 app.get('/channels/:channelId/messages', function(req, res) {
@@ -135,7 +138,7 @@ app.get('/channels/:channelId/messages', function(req, res) {
 
     //getting channels for search
     var channel = require('./channels.json').filter(function( obj ) {
-    return obj.id == channelId;
+      return obj.id == channelId;
     });
     
     //checking if channel exists
@@ -148,14 +151,17 @@ app.get('/channels/:channelId/messages', function(req, res) {
         return;
     }
 
-    messagesModel = messages;
-    for (let i = 0, len = messagesModel.length; i < len; i++) {
-        delete messagesModel[i].channel;
+    messagesModel = [];
+    for (let i = 0, len = messages.length; i < len; i++) {
+        messagesModel.push({id: messages[i].id,
+                            content: messages[i].content,
+                            created_at:messages[i].created_at,
+                            author: messages[i].author});
     }
 
     res.send(messagesModel);
 });
 
 var server = app.listen(5000, function () {
-    console.log('Server is running..');
+    console.log('Server is running on port 5000...');
 });
