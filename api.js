@@ -139,13 +139,8 @@ app.get('/channels/:channelId/messages', function(req, res) {
     var channelId = req.params.channelId; //getting channelId
 
     //getting channels for search
-<<<<<<< HEAD
-    var channel = require('./channels.json').filter(function( obj ) {
-      return obj.id == channelId;
-=======
     var channel = channels.filter(function( obj ) {
     return obj.id == channelId;
->>>>>>> b3e0283f5981f993270c47689265e287022f5c55
     });
     
     //checking if channel exists
